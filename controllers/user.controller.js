@@ -9,24 +9,7 @@ dotenv.config();
 
 export async function userProfile(req, res) {
   try {
-    if (!req.cookies || !req.cookies[COOKIE_CONST.ACCESS_TOKEN]) {
-      return res.status(STATUS_CODES.UNAUTHORIZED).json({
-        type: RESPONSE_TYPES.ERROR,
-        message: "Access token is missing",
-        payload: null,
-      });
-    }
-
-    const userAccessToken = req.cookies[COOKIE_CONST.ACCESS_TOKEN];
-
-    // ✅ Verify JWT
-    const decodedUser = jwt.verify(
-      userAccessToken,
-      process.env.ACCESS_TOKEN_SECRET
-    );
-    console.log(decodedUser);
-    // ✅ Fetch full user details from the database
-    const user = await User.findById(decodedUser.userId).select("-password"); // Exclude password
+    const user = req.user;
 
     if (!user) {
       return res.status(STATUS_CODES.NOT_FOUND).json({
@@ -59,26 +42,9 @@ export async function userProfile(req, res) {
 
 export async function updateProfileByUser(req, res) {
   try {
-    // 1️⃣ Extract Access Token from Cookie
-    const userAccessToken = req.cookies[COOKIE_CONST.ACCESS_TOKEN];
-
-    if (!userAccessToken) {
-      return res.status(STATUS_CODES.UNAUTHORIZED).json({
-        type: RESPONSE_TYPES.ERROR,
-        message: "Unauthorized - No token provided",
-        payload: null,
-      });
-    }
-
-    // 2️⃣ Decode Token and Get User ID
-    const decodedUser = jwt.verify(
-      userAccessToken,
-      process.env.ACCESS_TOKEN_SECRET
-    );
-    const userId = decodedUser.userId;
 
     // 3️⃣ Fetch User from Database
-    const user = await User.findById(userId);
+    const user = req.user;
     if (!user) {
       return res.status(STATUS_CODES.NOT_FOUND).json({
         type: RESPONSE_TYPES.ERROR,
