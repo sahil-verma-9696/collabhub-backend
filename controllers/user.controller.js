@@ -42,8 +42,7 @@ export async function userProfile(req, res) {
 
 export async function updateProfileByUser(req, res) {
   try {
-
-    // 3️⃣ Fetch User from Database
+    // 3️⃣ Fetch User from request
     const user = req.user;
     if (!user) {
       return res.status(STATUS_CODES.NOT_FOUND).json({
@@ -79,3 +78,6 @@ export async function updateProfileByUser(req, res) {
     });
   }
 }
+
+// TODO: Implement Search Users pending due to skill model not created
+export async function searchUsers(req, res) {}
