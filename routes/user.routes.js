@@ -12,6 +12,7 @@ export const router = Router();
 router.get(ROUTES.USER.PROFILE, isProtected, userProfile); //✅
 // router.get(ROUTES.USER.SEARCH)
 
+// TODO: Admin Only middleware
 router.post(ROUTES.USER.UPDATE, isProtected, updateProfileByUser); //✅
 
 //TODO:
