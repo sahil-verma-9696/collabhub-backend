@@ -11,11 +11,11 @@ export const ROUTES = {
     BASE: "/api/user",
     PROFILE: "/profile", // Get user profile
     UPDATE: "/update-profile", // Update user profile
-    DELETE: "/delete-account", // Delete user account
-    PREFERENCES: "/preferences", // Update user preferences
     SEARCH: "/search", // Search users by name/skills
     CONNECTIONS: "/connections", // List user's connections (friends/colleagues)
     FOLLOW: "/:id/follow", // Follow/unfollow users (optional)
+    PREFERENCES: "/preferences", // Update user preferences
+    DELETE: "/delete-account", // Delete user account
   },
 
   TEAM: {
