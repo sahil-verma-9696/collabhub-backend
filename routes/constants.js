@@ -20,11 +20,11 @@ export const ROUTES = {
 
   TEAM: {
     BASE: "/api/team",
-    CREATE: "/create",
-    LIST: "/list",
-    DETAILS: "/:id",
-    UPDATE: "/:id/update",
-    DELETE: "/:id/delete",
+    CREATE: "/create", //✅ 
+    LIST: "/list",// ✅ 
+    DETAILS: "/:id", // ✅ 
+    UPDATE: "/:id/update", // ✅
+    DELETE: "/:id/delete", // ✅
     INVITE: "/:id/invite",
     JOIN: "/:id/join",
     LEAVE: "/:id/leave",
