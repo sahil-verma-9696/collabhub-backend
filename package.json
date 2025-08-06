@@ -1,0 +1,35 @@
+{
+  "name": "collabhub-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahil-verma-9696/collabhub-backend.git"
+  },
+  "keywords": [
+    "express",
+    "mongoose",
+    "real-time",
+    "scoket"
+  ],
+  "author": "sahil,sonal,muskan,vansh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sahil-verma-9696/collabhub-backend/issues"
+  },
+  "homepage": "https://github.com/sahil-verma-9696/collabhub-backend#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.17.0"
+  }
+}
