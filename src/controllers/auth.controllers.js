@@ -1,23 +1,28 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { User } from '../models/User.js';
+import User from '../models/user.model.js';
+import { access } from 'fs';
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const COOKIE_NAME = 'token';
+// JWT_SECRET=process.env.JWT_SECRET //✅
 
 // Register Controller
 export const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, username } = req.body;
   try {
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: 'Email already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({ name, email, password: hashedPassword });
-
+    const user = await User.create({
+      name, email, password: hashedPassword
+      , username
+    });
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({
+      message: 'Server error',
+      error: err.message
+    });
   }
 };
 
@@ -25,40 +30,40 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select('+password');
     if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-    res.cookie(COOKIE_NAME, token, {
+    res.cookie(process.env.COOKIE_NAME, token, {
       httpOnly: true,
       sameSite: 'strict',
       secure: false,
       maxAge: 86400000
     });
-
     res.json({ message: 'Logged in successfully' });
   } catch (err) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Login Error:', err);
+    res.json({ message: 'Error in login' });
   }
 };
 
 // Logout Controller
 export const logoutUser = (req, res) => {
-  res.clearCookie(COOKIE_NAME);
+  res.clearCookie(process.env.COOKIE_NAME);
   res.json({ message: 'Logged out successfully' });
 };
 
 // Get Authenticated User
 export const getMe = async (req, res) => {
-  const token = req.cookies[COOKIE_NAME];
+  const token = req.cookies[process.env.COOKIE_NAME];
   if (!token) return res.status(401).json({ message: 'Unauthorized' });
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id).select('-password');
     res.json(user);
   } catch {
