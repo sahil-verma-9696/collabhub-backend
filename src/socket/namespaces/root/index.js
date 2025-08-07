@@ -7,18 +7,14 @@ import chalk from "chalk";
  * @param {import("socket.io").Namespace} __ - The chat namespace instance.
  * @returns {(socket: import("socket.io").Socket) => void} - Socket connection handler.
  */
-export default function chatNamespace(_, __) {
+export default function rootNamespace(_, __) {
   return (socket) => {
     console.log(
-      chalk.yellow(
-        `New connection from ${socket.handshake.address} (${socket.id})`
-      )
+      `${chalk.gray(
+        "-" + new Date().toLocaleTimeString() + "-"
+      )} ${chalk.yellow("[socket/]")} ${chalk.gray(
+        `New connection (${socket.id})`
+      )}`
     );
-
-    socket.on("test", (data) => {
-      console.log("test event", data);
-
-      socket.emit("test", { message: "acknowledgment" });
-    });
   };
 }
