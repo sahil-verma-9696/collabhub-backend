@@ -1,24 +1,31 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { User } from '../models/User.js';
+import User from '../models/user.model.js';
+import { access } from 'fs';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const COOKIE_NAME = 'token';
 
 // Register Controller
 export const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password ,username} = req.body;
   try {
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: 'Email already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({ name, email, password: hashedPassword });
+    const user=await User.create({ name, email, passwordHash: hashedPassword ,username });
+
+    const token=jwt.sign({user:user._id},"secret_key");
+    res.cookie("accessToken",token);
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
-    res.status(500).json({ message: 'Server error' });
-  }
+    res.status(500).json({
+      message: 'Server error',
+      error: err.message
+  });
+}
 };
 
 // Login Controller
