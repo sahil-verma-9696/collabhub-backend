@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 
-import chatNamespace from "./namespaces/chat.js";
+import chatNamespace from "./namespaces/chat/index.js";
+import rootNamespace from "./namespaces/root/index.js";
 
 /**
  * Initializes a WebSocket server with a chat namespace.
@@ -17,8 +18,10 @@ function listen(httpServer, options) {
     pingTimeout: 1000,
   });
 
-  const chatNS = wsServer.of("/conversation");
-  
+  const chatNS = wsServer.of("/socket/conversation");
+  const rootNS = wsServer.of("/socket");
+
+  rootNS.on("connection", rootNamespace(wsServer, rootNS));
   chatNS.on("connection", chatNamespace(wsServer, chatNS));
 
   return wsServer;
