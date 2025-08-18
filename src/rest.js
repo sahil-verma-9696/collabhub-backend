@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 
 import { errorHandler } from "./middleware/error-handler.js";
 import { asyncHandler } from "./utilities/async-handler.js";
+import workspaceRoutes from './routes/workspace.routes.js' 
 
 const app = express();
 
@@ -28,6 +29,9 @@ app.get(
     res.send("Hello World!");
   })
 );
+
+// 
+app.use('/workspace',workspaceRoutes);
 
 // setup error handler
 app.use(errorHandler);
