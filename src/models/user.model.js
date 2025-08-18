@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
-// Define schema
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -34,6 +33,23 @@ const userSchema = new mongoose.Schema(
       enum: ["online", "offline", "active"],
       default: "offline",
     },
+     role: {
+      type: String,
+      enum: ["admin", "member", "guest"],
+      default: "member"
+    },
+      workspaces: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Workspace"
+      }
+    ],
+        teams: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Team"
+      }
+    ]
   },
   {
     timestamps: true, // automatically adds createdAt & updatedAt
@@ -63,9 +79,4 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-//
-// Model
-//
-const User = mongoose.model("User", userSchema);
-
-export default User;
+export default mongoose.model("User", userSchema)
