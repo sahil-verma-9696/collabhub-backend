@@ -1,16 +1,16 @@
-import express from 'express';
-import {
-  registerUser,
-  loginUser,
-  logoutUser,
-  getMe
-} from '../controllers/authController.js';
+import { Router } from "express";
 
-const router = express.Router();
+import { signup } from "../controllers/auth/signup.controller.js";
+import { login } from "../controllers/auth/login.controller.js";
+import { logout } from "../controllers/auth/logout.controller.js";
+import { protect } from "../middleware/authMiddleware.js";
+import { me } from "../controllers/auth/me.controller.js";
 
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-router.post('/logout', logoutUser);
-router.get('/me', getMe);
+const router = Router();
+
+router.post("/signup", signup);
+router.post("/login", login);
+router.get("/me", protect, me);
+router.get("/logout",protect,logout)
 
 export default router;
