@@ -29,6 +29,7 @@
   "homepage": "https://github.com/sahil-verma-9696/collabhub-backend#readme",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "chalk": "^5.5.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
