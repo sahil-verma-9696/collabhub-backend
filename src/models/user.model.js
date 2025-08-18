@@ -1,60 +1,82 @@
-// models/User.js
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
-      trim: true
-    },
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true
+      required: [true, "Name is required"],
+      trim: true,
+      minlength: [2, "Name must be at least 2 characters long"],
+      maxlength: [50, "Name cannot be more than 50 characters"],
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Email is required"],
       unique: true,
       lowercase: true,
-      trim: true
+      trim: true,
+      match: [/^\S+@\S+\.\S+$/, "Please provide a valid email address"],
     },
-    passwordHash: {
+    password: {
       type: String,
-      required: true
+      required: [true, "Password is required"],
+      minlength: [6, "Password must be at least 6 characters long"],
+      select: false, // don't return password in queries by default
     },
-    role: {
+    profile_picture: {
+      type: String,
+      default: null, // optional field
+    },
+    status: {
+      type: String,
+      enum: ["online", "offline", "active"],
+      default: "offline",
+    },
+     role: {
       type: String,
       enum: ["admin", "member", "guest"],
       default: "member"
     },
-    profilePicUrl: {
-      type: String
-    },
-    bio: {
-      type: String,
-      trim: true
-    },
-    skills: {
-      type: [String], // Example: ["React", "Node.js", "UI Design"]
-      default: []
-    },
-    workspaces: [
+      workspaces: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Workspace"
       }
     ],
-    teams: [
+        teams: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Team"
       }
     ]
   },
-  { timestamps: true }
+  {
+    timestamps: true, // automatically adds createdAt & updatedAt
+  }
 );
+
+//
+// Middleware: Hash password before saving
+//
+userSchema.pre("save", async function (next) {
+  // Only hash if password is modified or new
+  if (!this.isModified("password")) return next();
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+//
+// Instance method: Compare passwords
+//
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
 export default mongoose.model("User", userSchema)
