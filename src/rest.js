@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 import { errorHandler } from "./middleware/error-handler.js";
 import { asyncHandler } from "./utilities/async-handler.js";
 
+import authRoutes from "./routes/auth.routes.js";
+
 const app = express();
 
 // TODO : enable cors
@@ -19,7 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // define all the entry routes here(i.e. /auth, /admin , /user , /workspace etc.)
-// app.use("/auth", authRoutes);
+app.use("/auth", authRoutes);
 
 // test
 app.get(
