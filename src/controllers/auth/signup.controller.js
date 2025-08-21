@@ -13,7 +13,7 @@ export const signup = asyncHandler(async (req, res) => {
   }
 
   // excute if model change and previous model inforce some indexing
-  // const monogores = await User.syncIndexes();
+  const monogores = await User.syncIndexes();
   // console.log(monogores)
 
 
@@ -46,7 +46,7 @@ export const signup = asyncHandler(async (req, res) => {
   res.status(201).json({
     message: "User registered successfully",
     user: {
-      id: newUser._id,
+      _id: newUser._id,
       name: newUser.name,
       email: newUser.email,
       profile_picture: newUser.profile_picture,
