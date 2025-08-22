@@ -15,7 +15,7 @@ const moduleSchema = new mongoose.Schema(
       maxlength: [500, "Description cannot exceed 500 characters"],
       default: "",
     },
-    project: {
+    Workspace: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Project",
       required: [true, "Module must belong to a project"],
