@@ -20,6 +20,7 @@ export const protect = asyncHandler(async (req, res, next) => {
   let decoded;
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(process.env.JWT_SECRET)
   } catch (e) {
     const err = new Error("Not authorized, invalid token");
     err.statusCode = 401;

@@ -1,4 +1,4 @@
-import User from "../../models/User.js";
+import User from "../../models/user.model.js";
 import { asyncHandler } from "../../utilities/async-handler.js";
 import { generateToken } from "../../utilities/generateToken.js";
 

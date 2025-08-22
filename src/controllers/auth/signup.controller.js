@@ -1,4 +1,4 @@
-import User from "../../models/User.js";
+import User from "../../models/user.model.js";
 import { asyncHandler } from "../../utilities/async-handler.js";
 import { generateToken } from "../../utilities/generateToken.js";
 
@@ -12,6 +12,11 @@ export const signup = asyncHandler(async (req, res) => {
     throw err;
   }
 
+  // excute if model change and previous model inforce some indexing
+  const monogores = await User.syncIndexes();
+  // console.log(monogores)
+
+
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     const err = new Error("Email already in use");
@@ -19,12 +24,15 @@ export const signup = asyncHandler(async (req, res) => {
     throw err;
   } 
 
+
   const newUser = await User.create({
     name,
     email,
     password,
     profile_picture,
   });
+
+  await newUser.save();
 
   const token = generateToken(newUser._id);
 
