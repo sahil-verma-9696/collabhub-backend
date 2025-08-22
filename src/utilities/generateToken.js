@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { configDotenv } from "dotenv";
 configDotenv({
-  // path: "./local.env",
+  path: "./local.env",
 });
 
 export const generateToken = (userId) => {

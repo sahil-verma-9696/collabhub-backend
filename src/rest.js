@@ -8,7 +8,7 @@ import { asyncHandler } from "./utilities/async-handler.js";
 
 import taskRoutes from "./routes/tasks.routes.js";
 import authRoutes from "./routes/auth.routes.js";
-
+import workspaceRoutes from "./routes/workspace.routes.js"
 const app = express();
 
 // TODO : enable cors
@@ -23,6 +23,8 @@ app.use(cookieParser());
 
 // define all the entry routes here(i.e. /auth, /admin , /user , /workspace etc.)
 app.use("/auth", authRoutes);
+app.use("/workspaces",workspaceRoutes)
+
 
 // test
 app.get(
