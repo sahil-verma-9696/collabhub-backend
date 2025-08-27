@@ -1,13 +1,13 @@
 import { Router } from "express";
-import createTaskById from "../controllers/task/createTaskById.js";
-import deleteTaskById from "../controllers/task/deleteTaskById.js";
-import updateTaskById from "../controllers/task/updateTaskById.js";
-const router = Router();
+import createTasks from "../controllers/task/createTasks.js";
+// import deleteTaskById from "../controllers/task/deleteTaskById.js";
+// import updateTaskById from "../controllers/task/updateTaskById.js";
+const router = Router({ mergeParams: true });
 
 
-router.post("/module/:module_id/create" , createTaskById);
-router.post("/:task_id" , deleteTaskById);
-router.post("/:task_id",  updateTaskById);
-
+// router.get("/" , getAllTasks);
+router.post("/" , createTasks);
+// router.patch("/:task_id" , updateTaskById);
+// router.delete("/:task_id" , deleteTaskById);
 
 export default router;
