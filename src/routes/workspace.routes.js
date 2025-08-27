@@ -8,10 +8,10 @@ import deleteWorkspace from "../controllers/workspace/deleteWorkspcace.js";
 
 const router = Router();
 
-router.post("/",protect, createWorkSpace);
-router.get("/",protect, getWorkspace);
-router.get("/:id",protect, getWorkspaceById);
-router.put("/:id",protect, updateWorkspace);
-router.delete("/:id",protect, deleteWorkspace);
+router.post("/", createWorkSpace);
+router.get("/", getWorkspace);
+router.get("/:id", getWorkspaceById);
+router.put("/:id", updateWorkspace);
+router.delete("/:id", deleteWorkspace);
 
 export default router;

@@ -15,15 +15,15 @@ const moduleSchema = new mongoose.Schema(
       maxlength: [500, "Description cannot exceed 500 characters"],
       default: "",
     },
-    Workspace: {
+    workspace: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Project",
-      required: [true, "Module must belong to a project"],
+      ref: "Workspace",
+      required: [true, "Module must belong to a workspace"],
     },
     assignedTo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      default: null, // module can be unassigned initially
+      default: null, 
     },
     status: {
       type: String,
@@ -46,7 +46,7 @@ const moduleSchema = new mongoose.Schema(
 );
 
 // Index for faster querying by project
-moduleSchema.index({ project: 1 });
+moduleSchema.index({ workspace: 1 });
 
 const Module = mongoose.model("Module", moduleSchema);
 

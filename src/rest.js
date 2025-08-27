@@ -8,7 +8,8 @@ import { asyncHandler } from "./utilities/async-handler.js";
 
 import taskRoutes from "./routes/tasks.routes.js";
 import authRoutes from "./routes/auth.routes.js";
-import workspaceRoutes from "./routes/workspace.routes.js"
+import workspaceRoutes from "./routes/workspace.routes.js";
+import moduleRoutes from "./routes/module.routes.js"
 import isWorkspaceOwner from "./middleware/isWorkspaceOwner.js";
 import { protect } from "./middleware/authMiddleware.js";
 const app = express();
@@ -25,7 +26,10 @@ app.use(cookieParser());
 
 // define all the entry routes here(i.e. /auth, /admin , /user , /workspace etc.)
 app.use("/auth", authRoutes);
-app.use("/workspaces", protect, workspaceRoutes);
+app.use("/workspaces",protect ,workspaceRoutes);
+app.use("/workspaces/:_id/modules", protect, moduleRoutes);
+
+//task namespace
 app.use("/workspaces/:workspace_id/modules/:module_id/tasks", protect, isWorkspaceOwner, taskRoutes);
 
 // test
