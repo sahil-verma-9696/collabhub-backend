@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import { configDotenv } from "dotenv";
 configDotenv();
-
 import User from "./../models/user.model.js";
 import { asyncHandler } from "../utilities/async-handler.js";
 

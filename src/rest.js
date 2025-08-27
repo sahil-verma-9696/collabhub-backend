@@ -9,6 +9,8 @@ import { asyncHandler } from "./utilities/async-handler.js";
 import taskRoutes from "./routes/tasks.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import workspaceRoutes from "./routes/workspace.routes.js"
+import isWorkspaceOwner from "./middleware/isWorkspaceOwner.js";
+import { protect } from "./middleware/authMiddleware.js";
 const app = express();
 
 // TODO : enable cors
@@ -23,8 +25,8 @@ app.use(cookieParser());
 
 // define all the entry routes here(i.e. /auth, /admin , /user , /workspace etc.)
 app.use("/auth", authRoutes);
-app.use("/workspaces",workspaceRoutes)
-
+app.use("/workspaces", protect, workspaceRoutes);
+app.use("/workspaces/:workspace_id/modules/:module_id/tasks", protect, isWorkspaceOwner, taskRoutes);
 
 // test
 app.get(
@@ -33,9 +35,6 @@ app.get(
     res.send("Hello World!");
   })
 );
-
-//task namespace
-app.use("/task", taskRoutes);
 
 // setup error handler
 app.use(errorHandler);
@@ -47,11 +46,11 @@ app.use(errorHandler);
  * @returns {import("http").Server} - The HTTP server instance.
  */
 function listen(port) {
-  const HOST = "localhost"; 
+  const HOST = "localhost";
   return app.listen(port, () => {
     console.log(
       chalk.gray(`App is listening on the `) +
-        chalk.green.bold.underline(`http://${HOST}:${port}`)
+      chalk.green.bold.underline(`http://${HOST}:${port}`)
     );
   });
 }
