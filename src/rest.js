@@ -8,7 +8,9 @@ import { asyncHandler } from "./utilities/async-handler.js";
 
 import taskRoutes from "./routes/tasks.routes.js";
 import authRoutes from "./routes/auth.routes.js";
-import workspaceRoutes from "./routes/workspace.routes.js"
+import workspaceRoutes from "./routes/workspace.routes.js";
+import moduleRoutes from "./routes/module.routes.js"
+import { protect } from "./middleware/authMiddleware.js";
 const app = express();
 
 // TODO : enable cors
@@ -23,8 +25,11 @@ app.use(cookieParser());
 
 // define all the entry routes here(i.e. /auth, /admin , /user , /workspace etc.)
 app.use("/auth", authRoutes);
-app.use("/workspaces",workspaceRoutes)
+app.use("/workspaces",protect ,workspaceRoutes);
+app.use("/workspaces/:_id/modules", protect, moduleRoutes);
 
+//task namespace
+app.use("/task", taskRoutes);
 
 // test
 app.get(
@@ -33,9 +38,6 @@ app.get(
     res.send("Hello World!");
   })
 );
-
-//task namespace
-app.use("/task", taskRoutes);
 
 // setup error handler
 app.use(errorHandler);
