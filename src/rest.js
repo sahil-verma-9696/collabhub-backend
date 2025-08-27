@@ -27,7 +27,7 @@ app.use(cookieParser());
 // define all the entry routes here(i.e. /auth, /admin , /user , /workspace etc.)
 app.use("/auth", authRoutes);
 app.use("/workspaces",protect ,workspaceRoutes);
-app.use("/workspaces/:_id/modules", protect, moduleRoutes);
+app.use("/workspaces/:workspace_id/modules", protect, moduleRoutes);
 
 //task namespace
 app.use("/workspaces/:workspace_id/modules/:module_id/tasks", protect, isWorkspaceOwner, taskRoutes);

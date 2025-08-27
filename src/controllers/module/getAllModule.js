@@ -2,14 +2,14 @@ import Module from "../../models/module.model.js";
 
 const getAllModules = async (req, res) => {
   try {
-    const {  _id } = req.params;
+    const {  workspace_id } = req.params;
 
-    if (!_id) {
+    if (!workspace_id) {
       return res.status(400).json({ message: "Workspace ID is required" });
     }
 
    
-    const modules = await Module.find({ workspace: _id });
+    const modules = await Module.find({ workspace: workspace_id });
 
     res.status(200).json({
       message: "Here are all your modules",

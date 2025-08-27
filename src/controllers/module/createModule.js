@@ -4,19 +4,19 @@ import Workspace from "../../models/workspace.model.js";
 const createModule = async (req, res) => {
   try {
     const { name, description } = req.body;
-    const { _id } = req.params; // workspace id
+    const {workspace_id } = req.params; // workspace id
     const userId = req.user.id; // from protect middleware (JWT auth)
 
     if (!name?.trim()) {
       return res.status(400).json({ message: "Module name is required." });
     }
 
-    if (!_id) {
+    if (!workspace_id) {
       return res.status(400).json({ message: "Workspace ID is required." });
     }
 
     // ✅ FIX: use findById instead of find
-    const workspace = await Workspace.findById(_id);
+    const workspace = await Workspace.findById(workspace_id);
     if (!workspace) {
       return res.status(404).json({ message: "Workspace not found." });
     }
@@ -30,7 +30,7 @@ const createModule = async (req, res) => {
     const module = await Module.create({
       name: name.trim(),
       description: description?.trim() || "",
-      workspace: _id,
+      workspace: workspace_id,
     });
 
     return res.status(201).json({
