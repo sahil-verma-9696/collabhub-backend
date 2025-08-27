@@ -10,6 +10,7 @@ import taskRoutes from "./routes/tasks.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import workspaceRoutes from "./routes/workspace.routes.js";
 import moduleRoutes from "./routes/module.routes.js"
+import isWorkspaceOwner from "./middleware/isWorkspaceOwner.js";
 import { protect } from "./middleware/authMiddleware.js";
 const app = express();
 
@@ -29,7 +30,7 @@ app.use("/workspaces",protect ,workspaceRoutes);
 app.use("/workspaces/:_id/modules", protect, moduleRoutes);
 
 //task namespace
-app.use("/task", taskRoutes);
+app.use("/workspaces/:workspace_id/modules/:module_id/tasks", protect, isWorkspaceOwner, taskRoutes);
 
 // test
 app.get(
@@ -49,11 +50,11 @@ app.use(errorHandler);
  * @returns {import("http").Server} - The HTTP server instance.
  */
 function listen(port) {
-  const HOST = "localhost"; 
+  const HOST = "localhost";
   return app.listen(port, () => {
     console.log(
       chalk.gray(`App is listening on the `) +
-        chalk.green.bold.underline(`http://${HOST}:${port}`)
+      chalk.green.bold.underline(`http://${HOST}:${port}`)
     );
   });
 }
