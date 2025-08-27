@@ -1,7 +1,7 @@
 import Workspace from "../../models/workspace.model.js";
 
 const getWorkspaceById = async(req,res)=>{
-    const {id} = req.params;
+    const {workspace_id} = req.params;
 
     if(!id){
         const err = new Error("Your id is required");
@@ -10,7 +10,7 @@ const getWorkspaceById = async(req,res)=>{
     }
 
     const workspaceById = await Workspace.find({
-      _id: id, owner: req.user._id 
+      _id: workspace_id, owner: req.user._id 
     })
 
   if (!workspaceById) {
