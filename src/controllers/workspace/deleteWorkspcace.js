@@ -2,12 +2,11 @@ import Workspace from "../../models/workspace.model.js";
 
 
 const deleteWorkspace = async (req, res) => {
-  const { id } = req.params;
+  const { workspace_id } = req.params;
 
   // Find workspace and soft-delete
-  const deletedWorkspace = await Workspace.findOneAndUpdate(
-    { _id: id, owner: req.user._id, status: "active" },
-    { $set: { status: "deleted" } },
+  const deletedWorkspace = await Workspace.findOneAndDelete(
+    { _id: workspace_id, owner: req.user._id},
     { new: true }
   );
 

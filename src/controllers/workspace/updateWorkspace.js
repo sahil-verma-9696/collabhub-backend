@@ -8,11 +8,11 @@ const updateWorkspace = async (req, res) => {
   }
 
   const { name, description } = req.body;
-  const { id } = req.params;
+  const {workspace_id} = req.params;
 
  
   const updatedWorkspace = await Workspace.findOneAndUpdate(
-    { _id: id, owner: req.user._id },
+    { _id:workspace_id, owner: req.user._id },
     { $set: { ...(name && { name }), ...(description && { description }) } },
     { new: true, runValidators: true }
   );
