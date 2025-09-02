@@ -13,7 +13,7 @@ import rootNamespace from "./namespaces/root/index.js";
 function listen(httpServer, options) {
   const wsServer = new Server(httpServer, {
     ...options,
-    cors: { origin: "*" },
+    cors: { origin: "http://localhost:5173" },
     pingInterval: 2000,
     pingTimeout: 1000,
   });

@@ -11,10 +11,10 @@ import authRoutes from "./routes/auth.routes.js";
 import workspaceRoutes from "./routes/workspace.routes.js"
 const app = express();
 
-// TODO : enable cors
+// TODO : enable cors for live frontend 
 app.use(
   cors({
-    origin: "*", // frontend origin
+    origin: "http://localhost:5173", // frontend origin
     credentials: true,
   })
 );
