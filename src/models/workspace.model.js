@@ -42,6 +42,12 @@ const workspaceSchema = new mongoose.Schema(
       enum: ["active", "archived", "deleted"],
       default: "active",
     },
+    modules: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Module",
+      },
+    ],
   },
   {
     timestamps: true, // createdAt & updatedAt
