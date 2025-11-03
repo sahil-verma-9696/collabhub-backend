@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
       minlength: [6, "Password must be at least 6 characters long"],
       select: false, // don't return password in queries by default
     },
-    profile_picture: {
+    avatarUrl: {
       type: String,
       default: null, // optional field
     },
@@ -33,23 +33,24 @@ const userSchema = new mongoose.Schema(
       enum: ["online", "offline", "active"],
       default: "offline",
     },
-     role: {
+    role: {
       type: String,
       enum: ["admin", "member", "guest"],
-      default: "member"
+      default: "member",
     },
-      workspaces: [
+    workspaces: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Workspace"
-      }
+        ref: "Workspace",
+      },
     ],
-        teams: [
+    teams: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Team"
-      }
-    ]
+        ref: "Team",
+      },
+    ],
+    assign
   },
   {
     timestamps: true, // automatically adds createdAt & updatedAt
@@ -79,4 +80,4 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-export default mongoose.model("User", userSchema)
+export default mongoose.model("User", userSchema);
